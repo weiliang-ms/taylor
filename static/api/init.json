@@ -1,0 +1,167 @@
+{
+  "clearInfo": {
+    "clearUrl": "api/clear.json"
+  },
+  "homeInfo": {
+    "title": "首页",
+    "icon": "fa fa-home",
+    "href": "page/welcome-1.html?mpi=m-p-i-0"
+  },
+  "logoInfo": {
+    "title": "taylor nginx",
+    "image": "images/logo.png",
+    "href": ""
+  },
+  "menuInfo": {
+    "currency": {
+      "title": "常规管理",
+      "icon": "fa fa-address-book",
+      "child": [
+        {
+          "title": "主页模板",
+          "href": "",
+          "icon": "fa fa-home",
+          "target": "_self",
+          "child": [
+            {
+              "title": "主页一",
+              "href": "page/welcome-1.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "主页二",
+              "href": "page/welcome-2.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "配置管理",
+          "href": "",
+          "target": "_self",
+          "child": [
+            {
+              "title": "配置总览",
+              "href": "page/table.html",
+              "target": "_self"
+            },
+            {
+              "title": "手动配置",
+              "href": "page/manual-config.html",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "安全管理",
+          "href": "",
+          "target": "_self",
+          "child": [
+            {
+              "title": "白名单",
+              "href": "",
+              "target": "_self",
+              "child": [
+                {
+                  "title": "host",
+                  "href": "page/white-host.html",
+                  "target": "_self"
+                },
+                {
+                  "title": "method",
+                  "href": "page/white-method.html",
+                  "target": "_self"
+                },
+                {
+                  "title": "referer",
+                  "href": "page/white-referer.html",
+                  "target": "_self"
+                }
+              ]
+            },
+            {
+              "title": "黑名单",
+              "href": "",
+              "target": "_self",
+              "child": [
+                {
+                  "title": "args",
+                  "href": "page/black-args.html",
+                  "target": "_self"
+                },
+                {
+                  "title": "cookie",
+                  "href": "page/black-cookie.html",
+                  "target": "_self"
+                },
+                {
+                  "title": "url",
+                  "href": "page/black-url.html",
+                  "target": "_self"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "日志管理",
+          "href": "page/logging.html",
+          "target": "_self"
+        },
+        {
+          "title": "终端控制台",
+          "href": "page/terminal.html",
+          "target": "_self"
+        }
+      ]
+    },
+    "component": {
+      "title": "监控管理",
+      "child": [
+        {
+          "title": "资源监控",
+          "href": "page/glance.html",
+          "target": "_self"
+        },
+        {
+          "title": "日志监控",
+          "href": "page/report.html",
+          "target": "_self"
+        }]
+    },
+    "other": {
+      "title": "配置样例",
+      "icon": "fa fa-slideshare",
+      "child": [
+        {
+          "title": "http配置样例",
+          "href": "",
+          "icon": "fa fa-meetup",
+          "target": "",
+          "child": [
+            {
+              "title": "http",
+              "href": "page/http.html",
+              "icon": "fa fa-calendar",
+              "target": "_self"
+            },
+            {
+              "title": "https",
+              "href": "page/https.html",
+              "icon": "fa fa-calendar",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "tcp配置样例",
+          "href": "page/tcp.html",
+          "icon": "fa fa-meetup",
+          "target": "_self"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="../css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <form class="layui-form layui-form-pane" action="">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">新增规则</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="content" placeholder="输入新增规则" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <a class="layui-btn" lay-submit="" lay-filter="add-btn">新增</a>
+                </div>
+            </div>
+        </form>
+        <table class="layui-hide" id="currentTableId" lay-filter="processEvent"></table>
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete-btn">删除</a>
+        </script>
+    </div>
+</div>
+<script src="../lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'table', 'upload'], function () {
+        const $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+
+        table.render({
+            elem: '#currentTableId',
+            url: '/v1/process/waf/rules'
+            ,method: 'POST'
+            ,where: {type: "black",rule: "url"}
+            ,toolbar: '#currentTableId' //开启头部工具栏，并为其绑定左侧模板
+            ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+             title: '提示'
+            ,layEvent: 'LAYTABLE_TIPS'
+            ,icon: 'layui-icon-tips'
+            }],
+            cols: [[
+                {type: "checkbox", width: 50, fixed: "left"},
+                {field: 'id', width: "10%", title: 'ID', sort: true, align: "center"},
+                {field: 'url', width: "20%", title: 'url', sort: true,edit: 'text', align: "center"},
+                {field: 'status', width: "10%", title: '状态', sort: true, align: "center"},
+                {field: 'path', width: "30%", title: '文件位置', align: "center"},
+                {field: 'modifyTime', width: "15%", title: '最后修改时间', align: "center"},
+                {title: '操作', width: "10%", templet: '#currentTableBar', fixed: "right", align: "center"}
+            ]],
+            page: true,
+            limits: [10, 15, 20, 25],
+            limit: 10,
+        });
+
+        table.on('tool(processEvent)', function (obj) {
+            const data = obj.data;
+            const path = data.path
+            if (obj.event === 'delete-btn') {
+                layer.confirm('删除以下规则：'+ obj.data["url"], function (index) {
+                    console.log(obj.field)
+                        $.ajax({
+                            url: '/v1/process/config/waf/delete',
+                            type:'POST',
+                            contentType: "application/json",
+                            data: JSON.stringify({"type":"black","rule":"url","content":obj.data["url"]}),
+                            beforeSend:function () {
+                                this.layerIndex = layer.load(0, { shade: [0.5, '#393D49'] });
+                            },
+                            success:function(rep){
+                                layer.msg(rep.msg, {icon: 1})
+                                $(".layui-laypage-btn")[0].click();
+                                // $('#chc_id').val(rep.name);
+                                // table.reload()
+                            },
+                            error: function(xhr){
+                                layer.msg(JSON.parse(xhr.responseText).msg, {icon: 5})
+                            },
+                            complete: function () {
+                                layer.close(this.layerIndex);
+                            },
+                        });
+                    layer.close(index);
+                }
+                );
+            }
+        });
+        //监听单元格编辑
+        table.on('edit(processEvent)', function(obj){
+            //  获取单元格编辑之前td的选择器
+            const selector = obj.tr.selector+' td[data-field="'+obj.field+'"] div';
+            // 单元格编辑之前的值
+            const oldtext = $(selector).text();
+            const value = obj.value //得到修改后的值
+                ,data = obj.data; //得到所在行所有键值
+            $.ajax({
+                url:'/v1/process/config/waf/edict',
+                type:'POST',
+                contentType: "application/json",
+                data: JSON.stringify({"path":data["path"], "oldValue":oldtext, "newValue":value}),
+                beforeSend:function () {
+                    this.layerIndex = layer.load(0, { shade: [0.5, '#393D49'] });
+                },
+                success:function(rep){
+                    $(".layui-laypage-btn")[0].click();
+                    layer.msg(rep.msg, {icon: 1})
+                },
+                complete: function () {
+                    layer.close(this.layerIndex);
+                },
+            });
+        });
+        // 监听添加操作
+        form.on('submit(add-btn)', function (data) {
+            layer.confirm('确认新增规则：' + data.field["content"] + '?', {icon: 3, title:'提示'}, function(index){
+                //do something
+                $.ajax({
+                    url: '/v1/process/config/waf/add',
+                    type:'POST',
+                    contentType: "application/json",
+                    data: JSON.stringify({"type":"black", "rule":"url","content":data.field["content"]}),
+                    beforeSend:function () {
+                        this.layerIndex = layer.load(0, { shade: [0.5, '#393D49'] });
+                    },
+                    success:function(rep){
+                        layer.msg("删除成功", {icon: 1})
+                        $(".layui-laypage-btn")[0].click();
+                        // $('#chc_id').val(rep.name);
+                        // table.reload()
+                    },
+                    error: function(xhr){
+                        layer.msg(JSON.parse(xhr.responseText).msg, {icon: 5})
+                        layer.close(index);
+                    },
+                    complete: function () {
+                        layer.close(this.layerIndex);
+                    },
+                });
+                layer.close(index);
+            });
+            });
+    });
+</script>
+</body>
+</html>

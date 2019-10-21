@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="../css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <fieldset class="layui-elem-field layuimini-search">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">过滤查询</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="keyWord" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <a class="layui-btn" lay-submit="" lay-filter="data-search-btn">搜索</a>
+                            <button type="button" class="layui-btn" id="uploadBtn"><i class="layui-icon"></i>新增</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <table class="layui-hide" id="currentTableId" lay-filter="processEvent"></table>
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="changeStatus">禁/启</a>
+        </script>
+    </div>
+</div>
+<script src="../lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'table', 'upload'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+        const upload = layui.upload;
+
+        table.render({
+            elem: '#currentTableId',
+            url: '/v1/process/conf/select'
+            ,method:'POST'
+            ,where: {keyWord: "all",}
+            ,toolbar: '#currentTableId' //开启头部工具栏，并为其绑定左侧模板
+            ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+             title: '提示'
+            ,layEvent: 'LAYTABLE_TIPS'
+            ,icon: 'layui-icon-tips'
+            }],
+            cols: [[
+                {type: "checkbox", width: 50, fixed: "left"},
+                {field: 'id', width: 80, title: 'ID', sort: true, align: "center"},
+                {field: 'name', minWidth: 50, title: '文件名', sort: true,edit: 'text', align: "center"},
+                {field: 'form', width: 80, title: '类型', sort: true, align: "center"},
+                {field: 'port', width: 150, title: '监听端口', align: "center"},
+                {field: 'path', minWidth: 120, title: '文件位置', align: "center"},
+                {field: 'modifyTime', minWidth: 20, title: '最后修改时间', align: "center"},
+                {title: '操作', width: 150, templet: '#currentTableBar', fixed: "right", align: "center"}
+            ]],
+            page: true,
+            limits: [10, 15, 20, 25],
+            limit: 10,
+        });
+
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            table.reload('currentTableId',{
+                title: "nginx配置总览",
+                url: '/v1/process/conf/select',
+                method:'POST',
+                contentType: "application/json",
+                where: {keyWord: data.field["keyWord"],},
+                cols: [[
+                {type: "checkbox", width: 50, fixed: "left"},
+                {field: 'id', width: 80, title: 'ID', sort: true, align: "center"},
+                {field: 'name', width: 280, title: '文件名', sort: true, align: "center"},
+                {field: 'form', width: 80, title: '类型', sort: true, align: "center"},
+                {field: 'port', width: 150, title: '监听端口', align: "center"},
+                {field: 'path', minWidth: 150, title: '文件位置', align: "center"},
+                {field: 'modifyTime', width: 120, title: '最后修改时间', align: "center"},
+                {title: '操作', width: 150, templet: '#currentTableBar', fixed: "right", align: "center"}
+            ]],
+                page: true,
+                limits: [10, 15, 20, 25],
+                limit: 10,
+                }
+            )});
+
+        // 监听添加操作
+        upload.render({
+            elem: '#uploadBtn'
+            ,url: '/v1/process/conf/upload'
+            ,method: 'POST'
+            ,size: 1024
+            ,accept: 'file' //普通文件
+            ,exts: 'tcp|conf'
+            //,multiple: true
+            ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                layer.load(); //上传loading
+            }
+            ,done: function(res, index, upload){
+                if (res.code == 0){
+                    layer.msg(res.msg);
+                }else {
+                    layer.msg(res.msg,{icon: 0});
+                }
+                layer.closeAll('loading'); //关闭loading
+            }
+            ,error: function(index, upload){
+                console.log(index)
+                layer.closeAll('loading'); //关闭loading
+            }
+        });
+
+        //监听表格复选框选择
+        table.on('checkbox(processEvent)', function (obj) {
+            console.log(obj)
+        });
+
+        //监听单元格编辑
+        table.on('edit(processEvent)', function(obj){
+            const value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            $.ajax({
+                url:'/v1/process/conf/rename',
+                type:'POST',
+                contentType: "application/json",
+                data: JSON.stringify({"path":data["path"],"name":data.name}),
+                beforeSend:function () {
+                    this.layerIndex = layer.load(0, { shade: [0.5, '#393D49'] });
+                },
+                success:function(data){
+                    $(".layui-laypage-btn")[0].click();
+                    layer.msg("修改成功", {
+                        icon: 6,//成功的表情
+                        time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                    }
+                    );
+                    layer.close(this.layerIndex);
+                },
+                error: function(xhr){
+                    layer.msg(JSON.parse(xhr.responseText).msg, {icon: 5})
+                    layer.close(this.layerIndex);
+                },
+                complete: function () {
+                    layer.close(this.layerIndex);
+                },
+            });
+            layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+        });
+
+        table.on('tool(processEvent)', function (obj) {
+            const data = obj.data;
+            const path = data.path
+            if (obj.event === 'edit') {
+                // layer.alert('编辑行：<br>' + JSON.stringify(data))
+                layer.prompt({
+                    // elem:"pre",
+                    // backgroundColor: "#3F3F3F",
+                    formType: 2,
+                    maxlength: 102400,
+                    area: ['800px', '350px']
+                    ,title: ['修改['+ data.name +'] 的配置信息','font-size:18px;backgroundColor:#3F3F3F;']
+                    ,value: data.content
+                }, function(content){
+                    $.ajax({
+                        url:'/v1/process/conf/update',
+                        type:'POST',
+                        contentType: "application/json",
+                        data: JSON.stringify({"path":path,"content":content}),
+                        beforeSend:function () {
+                            this.layerIndex = layer.load(0, { shade: [0.5, '#393D49'] });
+                        },
+                        success:function(rep){
+                            layer.msg(rep.msg, {icon: 1})
+                            $(".layui-laypage-btn")[0].click();
+                        },
+                        error: function(xhr){
+                            layer.msg(JSON.parse(xhr.responseText).msg, {icon: 5})
+                        },
+                        complete: function () {
+                            layer.close(this.layerIndex);
+                        },
+                    });
+
+                });
+            } else if (obj.event === 'changeStatus') {
+                layer.confirm('确认更改以下文件状态：'+ obj.data["path"], function (index) {
+                    console.log(obj.field)
+                        $.ajax({
+                            url: '/v1/process/conf/change',
+                            type:'POST',
+                            contentType: "application/json",
+                            data: JSON.stringify({"path":path,"name":data.name}),
+                            beforeSend:function () {
+                                this.layerIndex = layer.load(0, { shade: [0.5, '#393D49'] });
+                            },
+                            success:function(rep){
+                                layer.msg(rep.msg, {icon: 1})
+                                $(".layui-laypage-btn")[0].click();
+                            },
+                            error: function(xhr){
+                                layer.msg(JSON.parse(xhr.responseText).msg, {icon: 5})
+                            },
+                            complete: function () {
+                                layer.close(this.layerIndex);
+                            },
+                        });
+                    layer.close(index);
+                }
+                );
+            }
+        });
+
+    });
+</script>
+</body>
+</html>
