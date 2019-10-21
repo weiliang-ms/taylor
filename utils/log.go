@@ -3,16 +3,13 @@ package utils
 import (
 	"bytes"
 	"fmt"
-	sequences "github.com/konsorten/go-windows-terminal-sequences"
 	"github.com/sirupsen/logrus"
-	"io"
 	"os"
 	"runtime"
 	"sort"
 	"strconv"
 	"strings"
 	"sync"
-	"syscall"
 	"time"
 	"unicode/utf8"
 )
@@ -82,7 +79,8 @@ type FieldMap map[fieldKey]string
 
 func (f *CustomFormatter) init(entry *logrus.Entry) {
 	if entry.Logger != nil {
-		f.isTerminal = checkIfTerminal(entry.Logger.Out)
+		//f.isTerminal = checkIfTerminal(entry.Logger.Out)
+		f.isTerminal=false
 	}
 	// Get the max length of the level text
 	for _, level := range AllLevels {
@@ -440,28 +438,28 @@ func (f *CustomFormatter) needsQuoting(text string) bool {
 	return false
 }
 
-func initTerminal(w io.Writer) {
-	switch v := w.(type) {
-	case *os.File:
-		_ = sequences.EnableVirtualTerminalProcessing(syscall.Handle(v.Fd()), true)
-	}
-}
+//func initTerminal(w io.Writer) {
+//	switch v := w.(type) {
+//	case *os.File:
+//		_ = sequences.EnableVirtualTerminalProcessing(syscall.Handle(v.Fd()), true)
+//	}
+//}
 
-func checkIfTerminal(w io.Writer) bool {
-	var ret bool
-	switch v := w.(type) {
-	case *os.File:
-		var mode uint32
-		err := syscall.GetConsoleMode(syscall.Handle(v.Fd()), &mode)
-		ret = err == nil
-	default:
-		ret = false
-	}
-	if ret {
-		initTerminal(w)
-	}
-	return ret
-}
+//func checkIfTerminal(w io.Writer) bool {
+//	var ret bool
+//	switch v := w.(type) {
+//	case *os.File:
+//		var mode uint32
+//		err := syscall.GetConsoleMode(syscall.Handle(v.Fd()), &mode)
+//		ret = err == nil
+//	default:
+//		ret = false
+//	}
+//	if ret {
+//		initTerminal(w)
+//	}
+//	return ret
+//}
 
 func init() {
 	baseTimestamp = time.Now()
