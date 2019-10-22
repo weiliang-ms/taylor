@@ -5,7 +5,7 @@
   "homeInfo": {
     "title": "首页",
     "icon": "fa fa-home",
-    "href": "page/welcome-1.html?mpi=m-p-i-0"
+    "href": "page/welcome.html"
   },
   "logoInfo": {
     "title": "taylor nginx",
@@ -18,24 +18,10 @@
       "icon": "fa fa-address-book",
       "child": [
         {
-          "title": "主页模板",
-          "href": "",
+          "title": "主页",
+          "href": "page/welcome.html",
           "icon": "fa fa-home",
-          "target": "_self",
-          "child": [
-            {
-              "title": "主页一",
-              "href": "page/welcome-1.html",
-              "icon": "fa fa-tachometer",
-              "target": "_self"
-            },
-            {
-              "title": "主页二",
-              "href": "page/welcome-2.html",
-              "icon": "fa fa-tachometer",
-              "target": "_self"
-            }
-          ]
+          "target": "_self"
         },
         {
           "title": "配置管理",
@@ -111,7 +97,7 @@
           "target": "_self"
         },
         {
-          "title": "终端控制台",
+          "title": "控制台",
           "href": "page/terminal.html",
           "target": "_self"
         }

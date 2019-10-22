@@ -7,7 +7,7 @@ type NginxConfigInfo struct {
 	Protocol   string `json:"protocol"`   // nginx代理的协议
 	Naxsi      string `json:"naxsi"`      // 是否开启naxsi模块
 	ExposePort string `json:"exposePort"` // 防火墙是否开放端口
-	Port       string `json:"port"`       // 配置监听端口
+	Port       int `json:"port"`       // 配置监听端口
 	Name       string `json:"name"`       // 配置文件名称
 }
 

@@ -3,6 +3,7 @@ package utils
 import (
 	"bufio"
 	"io"
+	"io/ioutil"
 	"taylor/errors"
 	"os"
 	"strings"
@@ -96,3 +97,22 @@ func AddLine(filePath string, line string) (err error, msg string) {
 		return errors.New(ContentExist), ContentExist
 	}
 }
+
+// 读取文件内容
+func ReadContent(path string) (content string) {
+	f, err := os.Open(path)
+	defer f.Close()
+	if err != nil {
+		 Logger.Errorln(err.Error())
+	}
+
+	b ,err := ioutil.ReadAll(f)
+	if err != nil {
+		Logger.Errorln(err.Error())
+	}
+	if b != nil {
+		content = string(b)
+	}
+	return
+}
+

@@ -33,6 +33,8 @@ const (
 	UnixDefaultStreamDir         = UnixDefaultBaseDir + "conf/stream.d/"
 	WindowsDefaultCoreConfigPath = WindowsDefaultBaseDir + "conf\\nginx.conf"
 	UnixDefaultCoreConfigPath    = UnixDefaultBaseDir + "conf/nginx.conf"
+	WindowsNginxVersionPath      = WindowsDefaultBaseDir + "conf\\version"
+	UnixNginxtVersionPath        = UnixDefaultBaseDir + "conf/version"
 	UnixDefaultWafDir            = UnixDefaultBaseDir + "conf/waf/"
 	WindowsDefaultWafDir         = WindowsDefaultBaseDir + "conf\\waf\\"
 	UnixDefaultWafWhiteDir       = UnixDefaultBaseDir + "conf/waf/white/"
@@ -149,15 +151,4 @@ func ConfigList() (configs []string) {
 		}
 	}
 	return configs
-}
-
-// TODO:非递归获取，待优化
-func getFilePath(directoryPath string) (files []string) {
-	f, _ := ioutil.ReadDir(directoryPath)
-	for _, v := range f {
-		if !v.IsDir() {
-			files = append(files, utils.DirAppendSlash(directoryPath)+v.Name())
-		}
-	}
-	return files
 }
