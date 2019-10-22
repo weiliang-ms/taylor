@@ -39,10 +39,15 @@ func Select(c *gin.Context) {
 func Rename(c *gin.Context) {
 	var instance SearchInstance
 	c.BindJSON(&instance)
-	err := os.Rename(instance.Path, utils.DirAppendSlash(utils.CurrentDir(instance.Path))+instance.Name)
-	if err != nil {
-		utils.Logger.Errorln(err.Error())
-		response(c, InternalError, err.Error())
+
+	if strings.Contains(instance.Path,"nginx.conf")  || strings.Contains(instance.Path,"http.proxy") {
+		response(c, Forbidden, utils.CoreConfigNotAllowModify)
+	}else {
+		err := os.Rename(instance.Path, utils.DirAppendSlash(utils.CurrentDir(instance.Path))+instance.Name)
+		if err != nil {
+			utils.Logger.Errorln(err.Error())
+			response(c, InternalError, err.Error())
+		}
 	}
 }
 
@@ -55,7 +60,7 @@ func Change(c *gin.Context) {
 	// 修改后配置文件属性，回执用于重载
 	name := changeName(instance.Name)
 	path := utils.DirAppendSlash(utils.CurrentDir(instance.Path))
-	if instance.Name == "nginx.conf" || instance.Name == "init.lua" || instance.Name == "access.lua" {
+	if instance.Name == "nginx.conf" || instance.Name == "http.proxy" {
 		response(c, Forbidden, utils.CoreConfigNotAllowModify)
 	} else {
 		utils.Logger.Info("更改配置文件启用状态,修改前为：" + instance.Name)

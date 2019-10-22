@@ -49,9 +49,9 @@ func Quit() (msg string, code int) {
 // 重载配置
 func Reload(c *gin.Context) {
 	cmd := BinaryPath() + ReloadConfigDirect
-	_, err := utils.Cmd(cmd)
+	msg, err := utils.Cmd(cmd)
 	if err != nil {
-		response(c, InternalError, err.Error())
+		response(c, InternalError, msg)
 	} else {
 		response(c, Successful, "重载配置成功！")
 	}

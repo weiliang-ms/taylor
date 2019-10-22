@@ -233,7 +233,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/nginx/route.go</url>
-          <line>18</line>
+          <line>33</line>
           <option name="timeStamp" value="55" />
         </line-breakpoint>
         <line-breakpoint type="DlvLineBreakpoint">
@@ -245,6 +245,11 @@
           <url>file://$PROJECT_DIR$/test/sort.go</url>
           <line>10</line>
           <option name="timeStamp" value="65" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/nginx/controller.go</url>
+          <line>42</line>
+          <option name="timeStamp" value="70" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

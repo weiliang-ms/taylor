@@ -151,6 +151,7 @@
                     layer.close(this.layerIndex);
                 },
                 error: function(xhr){
+                    $(".layui-laypage-btn")[0].click();
                     layer.msg(JSON.parse(xhr.responseText).msg, {icon: 5})
                     layer.close(this.layerIndex);
                 },
@@ -213,6 +214,7 @@
                             },
                             error: function(xhr){
                                 layer.msg(JSON.parse(xhr.responseText).msg, {icon: 5})
+                                $(".layui-laypage-btn")[0].click();
                             },
                             complete: function () {
                                 layer.close(this.layerIndex);

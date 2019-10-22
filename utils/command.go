@@ -36,7 +36,7 @@ func Shell(shell string) (message string, code int) {
 }
 
 // 执行shell语句
-func Cmd(shell string) (message string, err error) {
+func Cmd(shell string) (message string, re error) {
 
 	var out bytes.Buffer
 	var cmd *exec.Cmd
@@ -50,15 +50,15 @@ func Cmd(shell string) (message string, err error) {
 	Logger.Info("执行命令为：" + shell)
 
 	cmd.Stdout = &out
-	if err = cmd.Start(); err != nil {
-		Logger.Errorln(err.Error())
-		return err.Error(), err
+	if err := cmd.Start(); err != nil {
+		Logger.Errorln("shell start error: ", err.Error())
+		re = err
 	}
 
-	if err = cmd.Wait(); err != nil {
-		Logger.Errorln(out.String() + err.Error())
-		return err.Error(), err
+	if err := cmd.Wait(); err != nil {
+		Logger.Errorln("shell start error: ",err.Error())
+		re = err
 	}
-
-	return out.String(), nil
+	Logger.Info("运行结果：",out.String())
+	return out.String(), re
 }

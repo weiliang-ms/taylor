@@ -42,7 +42,7 @@
                 <div class="layui-row layui-col-space15">
                     <div class="layui-col-md6">
                         <div class="layui-card">
-                            <div class="layui-card-header"><i class="fa fa-warning icon"></i>数据统计</div>
+                            <div class="layui-card-header"><i class="fa fa-warning icon"></i>基本信息</div>
                             <div class="layui-card-body">
                                 <div class="welcome-module">
                                     <div class="layui-row layui-col-space10">
@@ -51,11 +51,11 @@
                                                 <div class="panel-body">
                                                     <div class="panel-title">
                                                         <span class="label pull-right layui-bg-blue">实时</span>
-                                                        <h5>用户统计</h5>
+                                                        <h2>worker</h2>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h1 class="no-margins">1234</h1>
-                                                        <small>当前分类总记录数</small>
+                                                        <h1 class="no-margins" style="text-align: center">4</h1>
+                                                        <small>当前nginx worker数量</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -65,11 +65,11 @@
                                                 <div class="panel-body">
                                                     <div class="panel-title">
                                                         <span class="label pull-right layui-bg-cyan">实时</span>
-                                                        <h5>商品统计</h5>
+                                                        <h2>server</h2>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h1 class="no-margins">1234</h1>
-                                                        <small>当前分类总记录数</small>
+                                                        <h1 class="no-margins" style="text-align: center">1</h1>
+                                                        <small>当前生效server数</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -174,7 +174,7 @@
                 <div class="layui-card">
                     <div class="layui-card-header"><i class="fa fa-fire icon"></i>版本信息</div>
                     <div class="layui-card-body layui-text">
-                        <table class="layui-table">
+                        <table class="layui-table" lay-filter="version">
                             <colgroup>
                                 <col width="100">
                                 <col>
@@ -188,7 +188,7 @@
                             </tr>
                             <tr>
                                 <td>nginx版本</td>
-                                <td>v1.16.1</td>
+                                <td id="td_version">v1.16.1</td>
                             </tr>
                             <tr>
                                 <td>安全模块</td>
@@ -255,13 +255,15 @@
         </div>
     </div>
 </div>
+<script>
+    const val = document.getElementById("td_version").innerText;
+    console.log(val)
+</script>
 <script src="../lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
 <script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
 <script>
-    layui.use(['layer', 'layuimini','echarts'], function () {
-        var $ = layui.jquery,
-            layer = layui.layer,
-            layuimini = layui.layuimini,
+    layui.use(['layer','echarts'], function () {
+        const $ = layui.jquery,
             echarts = layui.echarts;
 
         /**
@@ -294,72 +296,6 @@
                 }
             });
         });
-
-        /**
-         * 报表功能
-         */
-        var echartsRecords = echarts.init(document.getElementById('echarts-records'), 'walden');
-        var optionRecords = {
-            tooltip: {
-                trigger: 'axis'
-            },
-            legend: {
-                data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            toolbox: {
-                feature: {
-                    saveAsImage: {}
-                }
-            },
-            xAxis: {
-                type: 'category',
-                boundaryGap: false,
-                data: ['周一','周二','周三','周四','周五','周六','周日']
-            },
-            yAxis: {
-                type: 'value'
-            },
-            series: [
-                {
-                    name:'邮件营销',
-                    type:'line',
-                    data:[120, 132, 101, 134, 90, 230, 210]
-                },
-                {
-                    name:'联盟广告',
-                    type:'line',
-                    data:[220, 182, 191, 234, 290, 330, 310]
-                },
-                {
-                    name:'视频广告',
-                    type:'line',
-                    data:[150, 232, 201, 154, 190, 330, 410]
-                },
-                {
-                    name:'直接访问',
-                    type:'line',
-                    data:[320, 332, 301, 334, 390, 330, 320]
-                },
-                {
-                    name:'搜索引擎',
-                    type:'line',
-                    data:[820, 932, 901, 934, 1290, 1330, 1320]
-                }
-            ]
-        };
-        echartsRecords.setOption(optionRecords);
-
-        // echarts 窗口缩放自适应
-        window.onresize = function(){
-            echartsRecords.resize();
-        }
-
     });
 </script>
 </body>

@@ -152,3 +152,13 @@ func ConfigList() (configs []string) {
 	}
 	return configs
 }
+
+// 获取nginx版本说明文件路径
+func VersionConfigPath() string {
+	switch runtime.GOOS {
+		case "windows":
+			return WindowsNginxVersionPath
+		default:
+			return UnixNginxtVersionPath
+	}
+}
