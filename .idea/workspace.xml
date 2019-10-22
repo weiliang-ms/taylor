@@ -79,19 +79,20 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/nginx" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\golang\src\taylor\nginx" />
+      <recent name="D:\golang\src\nginx-admin\static\page" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\golang\src\nginx-admin\nginx" />
       <recent name="D:\golang\src\nginx-admin\utils" />
       <recent name="D:\golang\src\nginx-admin\static\page" />
       <recent name="D:\golang\src\nginx-admin\static" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\golang\src\nginx-admin\static\page" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -106,7 +107,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Go Build.go build demo.go">
+  <component name="RunManager" selected="Go Test.check_test.go">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="taylor" />
       <working_directory value="$PROJECT_DIR$/" />
@@ -135,6 +136,15 @@
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
+    <configuration name="go build sort.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="taylor" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/test/sort.go" />
+      <package value="nginx-admin" />
+      <directory value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="taylor" />
       <working_directory value="$PROJECT_DIR$/" />
@@ -146,9 +156,21 @@
       <filePath value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
+    <configuration name="check_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="taylor" />
+      <working_directory value="$PROJECT_DIR$/nginx" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <package value="nginx-admin" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/nginx/check_test.go" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.check_test.go" />
         <item itemvalue="Go Build.go build demo.go" />
+        <item itemvalue="Go Build.go build sort.go" />
         <item itemvalue="Go Build.go build demo.go (1)" />
       </list>
     </recent_temporary>
@@ -223,6 +245,16 @@
           <url>file://$PROJECT_DIR$/nginx/instance.go</url>
           <line>51</line>
           <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/test/sort.go</url>
+          <line>10</line>
+          <option name="timeStamp" value="65" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/nginx/check_test.go</url>
+          <line>38</line>
+          <option name="timeStamp" value="67" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

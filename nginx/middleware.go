@@ -3,8 +3,8 @@ package nginx
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"taylor/utils"
 	"strings"
+	"taylor/utils"
 )
 
 // nginx配置调整中间件

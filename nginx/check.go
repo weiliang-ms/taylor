@@ -8,19 +8,15 @@ import (
 )
 
 // 检测端口合法性
-func checkPort(port string) (msg string, result bool) {
-	re, err := strconv.Atoi(port)
-	if err != nil {
-		return utils.PortIllegal, false
-	}
+func checkPort(port int) (msg string, result bool) {
 
 	// 检测端口取值范围
-	if re < 1 || re > 65535 {
+	if port < 1 || port > 65535 {
 		return utils.PortOutOfRange, false
 	}
 
 	// 检测端口是否被占用
-	if _, code := utils.Shell(utils.CheckPortDirect + port); code == 0 {
+	if _, code := utils.Shell(utils.CheckPortDirect + strconv.Itoa(port)); code == 0 {
 		return utils.PortInUse, false
 	}
 
