@@ -35,7 +35,7 @@ type causer interface {
 	Cause() error
 }
 
-// ErrNotFound signals that the requested object doesn't exist
+// 404接口
 type ErrNotFound interface {
 	NotFound()
 }
@@ -61,8 +61,7 @@ type ErrUnavailable interface {
 	Unavailable()
 }
 
-// ErrForbidden signals that the requested action cannot be performed under any circumstances.
-// When a ErrForbidden is returned, the caller should never retry the action.
+// 403接口
 type ErrForbidden interface {
 	Forbidden()
 }

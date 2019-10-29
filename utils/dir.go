@@ -29,7 +29,7 @@ func CurrentDir(path string) string {
 }
 
 // '/'的格式
-func slashFormat() string {
+func SlashFormat() string {
 	switch runtime.GOOS {
 	case "windows":
 		return "\\"
@@ -46,7 +46,7 @@ func DirAppendSlash(path string) (re string) {
 	if dir.IsDir() && endWithSlash {
 		return path
 	}
-	return path + slashFormat()
+	return path + SlashFormat()
 }
 
 // 拼接路径,删除最后一个'/'或者'\'
@@ -54,7 +54,7 @@ func AppendPathWithSlash(path ...string) (re string) {
 	for _, v := range path {
 		re = DirAppendSlash(re + v)
 	}
-	return strings.TrimSuffix(re, slashFormat())
+	return strings.TrimSuffix(re, SlashFormat())
 }
 
 // 判断所给路径是否为文件夹

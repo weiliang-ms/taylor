@@ -10,6 +10,8 @@ import (
 	"taylor/utils"
 )
 
+const CoreConfigNotAllowModify  = "核心配置文件禁止修改！"
+
 // 查询
 func all(page int, limit int) (count int, data []map[string]interface{}) {
 	return getConfigs(page, limit)
@@ -41,7 +43,7 @@ func Rename(c *gin.Context) {
 	c.BindJSON(&instance)
 
 	if strings.Contains(instance.Path,"nginx.conf")  || strings.Contains(instance.Path,"http.proxy") {
-		response(c, Forbidden, utils.CoreConfigNotAllowModify)
+		response(c, Forbidden, CoreConfigNotAllowModify)
 	}else {
 		err := os.Rename(instance.Path, utils.DirAppendSlash(utils.CurrentDir(instance.Path))+instance.Name)
 		if err != nil {
@@ -61,7 +63,7 @@ func Change(c *gin.Context) {
 	name := changeName(instance.Name)
 	path := utils.DirAppendSlash(utils.CurrentDir(instance.Path))
 	if instance.Name == "nginx.conf" || instance.Name == "http.proxy" {
-		response(c, Forbidden, utils.CoreConfigNotAllowModify)
+		response(c, Forbidden, CoreConfigNotAllowModify)
 	} else {
 		utils.Logger.Info("更改配置文件启用状态,修改前为：" + instance.Name)
 		err := os.Rename(instance.Path, path+name)

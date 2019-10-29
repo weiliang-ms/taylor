@@ -23,7 +23,6 @@ const (
 	ConfigNameIllegal         = "配置文件名称非法，只能以数字、英文字母、下划线、'-'命名"
 	ConfigNameExist           = "配置文件名称重复，请更改名称！"
 	CheckPortDirect           = "netstat -aln|grep "
-	CoreConfigNotAllowModify  = "核心配置文件禁止修改！"
 	ActiveStatus              = "active"
 	DisableStatus             = "disable"
 )

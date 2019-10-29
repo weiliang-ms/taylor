@@ -1,9 +1,9 @@
 package main
 
 import (
-	"taylor/router"
+	"taylor/server"
 )
 
 func main() {
-	router.Router()
+	server.Start()
 }
